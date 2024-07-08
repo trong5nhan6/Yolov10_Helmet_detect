@@ -1,12 +1,13 @@
 import sys
 sys.path.append('D:\VS_code\Yolov10_Helmet_detect\yolo\yolov10')
-
 import streamlit as st
+
 import cv2
 import matplotlib.pyplot as plt
 from PIL import Image
 import numpy as np
 from ultralytics import YOLOv10
+
 
 # Đường dẫn tới mô hình YOLOv10
 MODEL_PATH_yolov10 = 'D:\\VS_code\\Yolov10_Helmet_detect\\yolov10n.pt'
@@ -55,9 +56,9 @@ def extract_detections(result):
     return detections
 
 
-def yolov10_app():
+def yolov10_app(MODEL_PATH):
     # Tải mô hình
-    model = load_model(MODEL_PATH_yolov10)
+    model = load_model(MODEL_PATH)
 
     # Tiêu đề ứng dụng Streamlit
     st.title("YOLOv10 Object Detection App")
@@ -90,41 +91,6 @@ def yolov10_app():
         st.write(f"Objects detected: {detection_text}")
 
 
-def yolov10_helmet_detection_app():
-    # Tải mô hình
-    model = load_model(MODEL_PATH_yolov10_hm)
-
-    # Tiêu đề ứng dụng Streamlit
-    st.title("YOLOv10 Helmet Detection App")
-    st.write("Upload an image to detect helmets")
-
-    # Tải lên file ảnh
-    uploaded_file = st.file_uploader(
-        "Choose an image...", type=["jpg", "jpeg", "png"])
-
-    if uploaded_file is not None:
-        # Đọc ảnh
-        image = read_image(uploaded_file)
-
-        # Thực hiện phát hiện mũ bảo hiểm
-        result = detect_helmets(model, image)
-
-        # Chú thích ảnh
-        annotated_image = plot_annotated_image(result)
-
-        # Trích xuất thông tin về các đối tượng được phát hiện
-        detections = extract_detections(result)
-        detection_text = ', '.join(
-            [f"{count} {cls}" for cls, count in detections.items()])
-
-        # Hiển thị ảnh đã chú thích
-        st.image(annotated_image, caption='Detected Image',
-                 use_column_width=True)
-
-        # Hiển thị thông tin các đối tượng được phát hiện
-        st.write(f"Objects detected: {detection_text}")
-
-
 def main():
     # Tiêu đề chính
     st.title("YOLOv10 Applications")
@@ -135,9 +101,9 @@ def main():
                               "YOLOv10 Object Detection", "YOLOv10 Helmet Detection"])
 
     if app_choice == "YOLOv10 Object Detection":
-        yolov10_app()
+        yolov10_app(MODEL_PATH_yolov10)
     elif app_choice == "YOLOv10 Helmet Detection":
-        yolov10_helmet_detection_app()
+        yolov10_app(MODEL_PATH_yolov10_hm)
 
 
 if __name__ == "__main__":
