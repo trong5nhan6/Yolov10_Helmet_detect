@@ -1,7 +1,7 @@
 import sys
 sys.path.append('D:\VS_code\Yolov10_Helmet_detect\yolo\yolov10')
-import streamlit as st
 
+import streamlit as st
 import cv2
 import matplotlib.pyplot as plt
 from PIL import Image
